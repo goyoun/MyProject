@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="Board"> 
+ 
+ <!-- 글쓰기 -->
+ 	<insert id="tirpBoardSave" parameterType="bdto">
+ 		insert into board_table (b_writer, b_title, b_category, b_contents, b_date, b_hits, b_likecount) 
+ 			values(#{b_writer},#{b_title},#{b_category},#{b_contents},now(),0,0)
+ 	</insert>
+ 
+ <!-- 파일저장 -->
+	<insert id="tripSavefile" parameterType="bdto">
+ 		insert into board_table(m_number, b_writer, b_title,b_category, b_contents, b_date, b_hits,b_likecount, b_filename) 
+ 			values(#{m_number},#{b_writer},#{b_title},#{b_category},#{b_contents},now(),0,0,#{b_filename})
+ 	</insert>
+ 	
+ <!-- 페이지리스트 -->
+ 	<select id="pagingList" parameterType="int" resultType="bdto">
+		select * from board_table where b_category='trip' order by b_number desc limit #{pagingStart}, 3
+	</select>
+
+<!-- 페이지리스트1 -->
+	<select id="pagingList1" parameterType="java.util.HashMap" resultType="bdto">
+		select * from board_table where b_category='trip' order by b_number desc limit #{start}, #{limit}
+	</select>
+
+<!-- 페이지카운트 -->
+	<select id="count" resultType="int">
+		select count(b_number) from board_table where b_category='trip'
+	</select>
+	
+<!-- 여행게시판목록 -->
+	<select id="tripBoard" resultType="bdto">
+		select * from board_table where b_category='trip'
+	</select>
+	
+<!-- 상세조회 -->	
+	<select id="findById" parameterType="long" resultType="bdto">
+		select * from board_table where b_number=#{b_number}
+	</select>
+	
+<!-- 조회수 증가 -->
+	<update id="hits" parameterType="long">
+		update board_table set b_hits=(b_hits+1) where b_number=#{b_number}
+	</update>	
+	
+<!-- 게시글 삭제 -->
+	<delete id="delete" parameterType="long">
+		delete from board_table where b_number=#{b_number}
+	</delete>
+	
+<!-- 업데이트 -->
+<update id="update" parameterType="bdto">
+	update board_table set b_title=#{b_title}, b_contents=#{b_contents}, b_date=now(), b_filename=#{b_filename} where b_number=#{b_number}
+</update>
+
+<!-- 서치기능 -->
+<select id="search" parameterType="java.util.HashMap" resultType="bdto">
+		select * from board_table		
+		<include refid="search"></include>
+	</select>
+	<sql id="search">
+		<choose>
+			<when test="type=='b_title'">
+				where b_title like concat('%', #{word}, '%') 
+			</when>
+			<when test="type=='b_writer'">
+				where b_writer like concat('%', #{word}, '%') 
+			</when>
+		</choose>
+	</sql>
+	
+<!-- 요리게시판 글쓰기 -->	
+ <insert id="cookBoardSave" parameterType="bdto">
+ 		insert into board_table (b_writer, b_title, b_category, b_contents, b_date, b_hits, b_likecount) 
+ 			values(#{b_writer},#{b_title},#{b_category},#{b_contents},now(),0,0)
+ 	</insert>
+
+ <!-- 파일저장 -->
+	<insert id="cookSavefile" parameterType="bdto">
+ 		insert into board_table(m_number, b_writer, b_title,b_category, b_contents, b_date, b_hits,b_likecount, b_filename) 
+ 			values(#{m_number},#{b_writer},#{b_title},#{b_category},#{b_contents},now(),0,0,#{b_filename})
+ 	</insert> 	
+ 	
+ 	<!-- 페이지리스트 -->
+ 	<select id="pagingListc" parameterType="int" resultType="bdto">
+		select * from board_table where b_category='cook' order by b_number desc limit #{pagingStartc}, 3
+	</select>
+
+<!-- 페이지리스트1 -->
+	<select id="pagingListco" parameterType="java.util.HashMap" resultType="bdto">
+		select * from board_table where b_category='cook' order by b_number desc limit #{startc}, #{limitc}
+	</select>
+
+<!-- 페이지카운트 -->
+	<select id="cookcount" resultType="int">
+		select count(b_number) from board_table where b_category='cook'
+	</select>
+
+ <!-- 요리게시판목록 -->
+	<select id="cookBoard" resultType="bdto">
+		select * from board_table where b_category='cook'
+	</select>	
+	
+<!-- 요리게시글 삭제 -->
+	<delete id="deletec" parameterType="long">
+		delete from board_table where b_number=#{b_number}
+	</delete>
+ 
+ <!-- 요리상세조회 -->	
+ 	<select id="findByIdc" parameterType="long" resultType="bdto">
+		select * from board_table where b_number=#{b_number}
+	</select>
+	
+<!-- 요리업데이트 -->
+<update id="updatec" parameterType="bdto">
+	update board_table set b_title=#{b_title}, b_contents=#{b_contents}, b_date=now(), b_filename=#{b_filename} where b_number=#{b_number}
+</update>
+
+<!-- 서치기능 -->
+<select id="searchc" parameterType="java.util.HashMap" resultType="bdto">
+		select * from board_table		
+		<include refid="searchc"></include>
+	</select>
+	<sql id="searchc">
+		<choose>
+			<when test="type=='b_title'">
+				where b_title like concat('%', #{word}, '%') 
+			</when>
+			<when test="type=='b_writer'">
+				where b_writer like concat('%', #{word}, '%') 
+			</when>
+		</choose>
+	</sql>
+ 	
+ </mapper>

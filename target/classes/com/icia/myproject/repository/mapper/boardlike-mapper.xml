@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="boardLike"> 
+ 
+  <insert id="createBoardLike" parameterType="ldto">
+    insert into like_table (b_number, m_number, heart) 
+    values (#{b_number}, #{m_number},1)
+  </insert>
+
+  <delete id="deleteBoardLike" parameterType="ldto">
+    delete from like_table
+    where b_number = #{b_number} and m_number = #{m_number}
+  </delete>
+
+   <select id="updateBoardLike" parameterType="long">
+       update board_table 
+       set 
+       b_likecount = (select count(*)
+       from like_table 
+       where b_number = #{b_number}) 
+       where b_number = #{b_number}
+        </select>
+
+   <select id="getBoardLike" parameterType="ldto" resultType="long">
+         select count(l_number) from like_table where b_number = #{b_number} and m_number = #{m_number}
+    </select>
+    
+   
+ 
+ </mapper>

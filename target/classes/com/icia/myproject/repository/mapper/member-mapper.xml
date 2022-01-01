@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="Member"> 
+ 	
+ 	<!-- 회원가입 -->
+ 	<insert id="membersave" parameterType="mdto">
+ 		insert into member_table(m_id, m_password, m_name, m_email, 
+ 		m_phone, m_gender, m_hobby, m_oaddress, m_address, m_detailaddress, m_extraaddress) 
+ 		values(#{m_id}, #{m_password}, #{m_name}, #{m_email}, #{m_phone},
+ 		#{m_gender}, #{m_hobby}, #{m_oaddress}, #{m_address}, #{m_detailaddress}, #{m_extraaddress})
+ 	</insert>
+ 	
+ 	<!-- 로그인 -->
+ 	<select id="login" parameterType="mdto" resultType="mdto">
+		select * from member_table where m_id=#{m_id} and m_password=#{m_password}
+ 	</select>
+ 
+	<!-- 아이디 중복 조회 -->
+	<select id="idDuplicate" parameterType="String" resultType="String">
+		select m_id from member_table where m_id=#{m_id}
+	</select>
+	
+	<!-- 마이페이지 -->
+	<select id="mypage" parameterType="long" resultType="mdto">
+ 		select * from member_table where m_number=#{m_number}
+ 	</select>
+ 	
+ 	<!-- 마이페이지 업데이트 -->
+ 	<update id="update" parameterType="mdto">
+ 		update member_table set m_email=#{m_email}, m_phone=#{m_phone}, m_hobby=#{m_hobby}, m_oaddress=#{m_oaddress},
+ 		m_address=#{m_address}, m_detailaddress=#{m_detailaddress}, m_extraaddress=#{m_extraaddress} where m_number=#{m_number}
+ 	</update>
+ 	
+ 	<!-- 회원조회 -->
+ 	<select id="memberAll" resultType="mdto">
+ 		select * from member_table
+ 	</select>
+ 	
+ 	<!-- 멤버상세조회 -->
+ 	<select id="findById" parameterType="mdto" resultType="mdto">
+ 		select * from member_table where m_number=#{m_number}
+ 	</select>
+ 	
+ 	<!-- 회원삭제 -->
+ 	<delete id="delete" parameterType="long">
+		delete from member_table where m_number=#{m_number}
+	</delete>
+ 	
+ 	
+ 	
+ 	
+ </mapper>
