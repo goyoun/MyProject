@@ -171,7 +171,19 @@ span {
   ${c.c_contents}
   <div class="d-flex flex-row-reverse bd-highlight">
     <div class="p-2 bd-highlight">
-  <button class="neon-button5" onclick="location.href='/comment/delete?b_number=${board.b_number}&page=${page}&c_number=${c.c_number}'">댓글삭제</button>
+    
+    
+    <c:choose>
+	<c:when test="${sessionScope.loginId eq c.c_writer}">
+  	<button class="neon-button5" onclick="location.href='/comment/delete?b_number=${board.b_number}&page=${page}&c_number=${c.c_number}'">댓글삭제</button>
+ 	</c:when>
+	
+	<c:when test="${sessionScope.loginId eq 'admin'}">
+	 <button class="neon-button5" onclick="location.href='/comment/delete?b_number=${board.b_number}&page=${page}&c_number=${c.c_number}'">댓글삭제</button>
+  	</c:when>
+  	
+  	</c:choose>
+  	
     </div></div>
     
     
